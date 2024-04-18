@@ -3,8 +3,16 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 const ModalCreateUser = (props) => {
   const { show, setShow } = props;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("USER"); // ["USER", "ADMIN"]
+  const [image, setImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
   const handleClose = () => {
     setShow(false);
@@ -15,14 +23,6 @@ const ModalCreateUser = (props) => {
     setImage("");
     setPreviewImage("");
   };
-  const handleShow = () => setShow(true);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("USER"); // ["USER", "ADMIN"]
-  const [image, setImage] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
 
   const handleUploadImage = (e) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -30,7 +30,30 @@ const ModalCreateUser = (props) => {
     setImage(e.target.files[0]);
   };
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const validatePassword = (password) => {
+    return String(password).length >= 6;
+  };
+
   const handleAddUser = async () => {
+    let checkEmail = validateEmail(email);
+    if (!checkEmail) {
+      toast.warn("Email is invalid");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      toast.warn("Password must be at least 6 characters");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -42,7 +65,14 @@ const ModalCreateUser = (props) => {
       "http://localhost:8081/api/v1/participant",
       formData
     );
-    console.log(response);
+
+    if (response.data && response.data.EC === 0) {
+      toast.success("Add user success");
+      handleClose();
+    }
+    if (response.data && response.data.EC === 1) {
+      toast.error(response.data.EM);
+    }
   };
   return (
     <>
