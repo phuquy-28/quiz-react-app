@@ -1,5 +1,13 @@
 .manager-user-container {
+  padding: 10px;
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+  }
   .manager-user-content {
+    .btn-add-user {
+      margin: 15px 0px;
+    }
   }
 }
 
