@@ -5,6 +5,15 @@
       height: 100vh !important;
     }
   }
+  .admin-content {
+    width: 100%;
+    .admin-header {
+      height: 3rem;
+      border: solid 1px green;
+    }
+    .admin-main {
+    }
+  }
 }
 
 .sidebar-btn-wrapper {
