@@ -1,5 +1,5 @@
 import ModalCreateUser from "./ModalCreateUser";
-
+import "./ManageUser.scss";
 const ManageUser = () => {
   return (
     <div className="manager-user-container">
@@ -10,8 +10,8 @@ const ManageUser = () => {
         </div>
         <div>
           <table>table</table>
-          <ModalCreateUser />
         </div>
+        <ModalCreateUser />
       </div>
     </div>
   );
