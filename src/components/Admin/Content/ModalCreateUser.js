@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { postCreateUser } from "../../../services/apiService";
 const ModalCreateUser = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchData } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -59,6 +59,7 @@ const ModalCreateUser = (props) => {
     if (data && data.EC === 0) {
       toast.success("Add user success");
       handleClose();
+      fetchData();
     }
     if (data && data.EC === 1) {
       toast.error(data.EM);
