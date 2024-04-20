@@ -3,10 +3,18 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
-import { postCreateUser } from "../../../services/apiService";
-import _ from "lodash";
+import { putUpdateUser } from "../../../services/apiService";
+import _, { set } from "lodash";
 const ModalUpdateUser = (props) => {
-  const { show, setShow, userUpdate } = props;
+  const {
+    show,
+    setShow,
+    userUpdate,
+    fetchData,
+    resetUserUpdate,
+    page,
+  } = props;
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -16,15 +24,26 @@ const ModalUpdateUser = (props) => {
 
   useEffect(() => {
     if (!_.isEmpty(userUpdate)) {
+      setId(userUpdate.id);
       setEmail(userUpdate.email);
       setUsername(userUpdate.username);
       setRole(userUpdate.role);
-      setPreviewImage(userUpdate.image);
+      if (userUpdate.image) {
+        setPreviewImage(`data:image/png;base64,${userUpdate.image}`);
+      }
     }
   }, [userUpdate]);
 
   const handleClose = () => {
     setShow(false);
+    setId("");
+    setEmail("");
+    setPassword("");
+    setUsername("");
+    setRole("USER");
+    setImage("");
+    setPreviewImage("");
+    resetUserUpdate({});
   };
 
   const handleUploadImage = (e) => {
@@ -41,28 +60,19 @@ const ModalUpdateUser = (props) => {
       );
   };
 
-  const validatePassword = (password) => {
-    return String(password).length >= 6;
-  };
-
-  const handleAddUser = async () => {
+  const handleUpdateUser = async () => {
     let checkEmail = validateEmail(email);
     if (!checkEmail) {
       toast.warn("Email is invalid");
       return;
     }
 
-    if (!validatePassword(password)) {
-      toast.warn("Password must be at least 6 characters");
-      return;
-    }
-
-    let data = await postCreateUser(email, password, username, role, image);
+    let data = await putUpdateUser(id, username, role, image);
 
     if (data && data.EC === 0) {
-      toast.success("Add user success");
+      toast.success("Update user success");
       handleClose();
-      //   fetchData();
+      fetchData(page);
     }
     if (data && data.EC === 1) {
       toast.error(data.EM);
@@ -140,10 +150,7 @@ const ModalUpdateUser = (props) => {
             </div>
             <div className="col-md-12 img-preview">
               {previewImage ? (
-                <img
-                  src={`data:image/jpeg;base64,${previewImage}`}
-                  alt="A cool image"
-                />
+                <img src={previewImage} alt="A cool image" />
               ) : (
                 <span>Image Preview</span>
               )}
@@ -154,7 +161,7 @@ const ModalUpdateUser = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAddUser}>
+          <Button variant="primary" onClick={handleUpdateUser}>
             Save
           </Button>
         </Modal.Footer>

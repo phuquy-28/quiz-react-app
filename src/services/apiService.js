@@ -13,4 +13,34 @@ const getAllUser = () => {
   return axios.get("api/v1/participant/all");
 };
 
-export { postCreateUser, getAllUser };
+const getUserWithPage = (page, limit) => {
+  return axios.get(`api/v1/participant?page=${page}&limit=${limit}`);
+};
+
+const putUpdateUser = (id, username, role, image) => {
+  const formData = new FormData();
+  formData.append("id", id);
+  formData.append("username", username);
+  formData.append("role", role);
+  formData.append("userImage", image);
+  return axios.put("api/v1/participant", formData);
+};
+
+const deleteDeleteUser = (id) => {
+  const params = new URLSearchParams();
+  params.append("id", id);
+  return axios.delete("api/v1/participant", {
+    data: params,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+};
+
+export {
+  postCreateUser,
+  getAllUser,
+  getUserWithPage,
+  putUpdateUser,
+  deleteDeleteUser,
+};
