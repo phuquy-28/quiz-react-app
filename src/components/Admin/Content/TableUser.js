@@ -1,6 +1,5 @@
-
 const TableUser = (props) => {
-  const { listUser } = props;
+  const { listUser, handleClickUpdate } = props;
   return (
     <>
       <table className="table table-hover table-bordered">
@@ -29,7 +28,12 @@ const TableUser = (props) => {
               <td>{user.role}</td>
               <td className="d-flex justify-content-around">
                 <button className="btn btn-danger">Delete</button>
-                <button className="btn btn-primary">Edit</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleClickUpdate(user)}
+                >
+                  Edit
+                </button>
                 <button className="btn btn-info">Detail</button>
               </td>
             </tr>
