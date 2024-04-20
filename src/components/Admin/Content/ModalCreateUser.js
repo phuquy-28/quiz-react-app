@@ -61,7 +61,7 @@ const ModalCreateUser = (props) => {
       fetchData(1);
       setPage(1);
     }
-    if (data && data.EC === 1) {
+    if (data && data.EC !== 0) {
       toast.error(data.EM);
     }
   };

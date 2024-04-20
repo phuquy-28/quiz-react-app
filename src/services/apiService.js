@@ -37,10 +37,15 @@ const deleteDeleteUser = (id) => {
   });
 };
 
+const postLogin = (email, password) => {
+  return axios.post("api/v1/login", { email, password });
+};
+
 export {
   postCreateUser,
   getAllUser,
   getUserWithPage,
   putUpdateUser,
   deleteDeleteUser,
+  postLogin,
 };

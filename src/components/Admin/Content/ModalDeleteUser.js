@@ -20,7 +20,7 @@ const ModalDeleteUser = (props) => {
       fetchData(page);
       // setPage(1);
     }
-    if (response && response.EC === 1) {
+    if (response && response.EC !== 0) {
       toast.error(response.EM);
     }
   };

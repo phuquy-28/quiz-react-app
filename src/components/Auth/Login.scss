@@ -2,7 +2,6 @@
   .header {
     height: 45px;
     text-align: right;
-    border: 1px solid #ccc;
   }
 
   .title {
@@ -31,5 +30,11 @@
     border-radius: 5px;
     color: white;
     background-color: black;
+  }
+
+  .back-to-home {
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
