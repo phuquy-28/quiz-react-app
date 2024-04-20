@@ -28,8 +28,6 @@ const Login = () => {
     if (response && response.EC === 0) {
       dispatch({ type: "FETCH_USER_LOGIN_SUCCESS", payload: response.DT });
       toast.success("Login success");
-      localStorage.setItem("token", response.DT.access_token);
-      localStorage.setItem("email", JSON.stringify(response.DT.email));
       //redirect
       navigate("/");
     }
