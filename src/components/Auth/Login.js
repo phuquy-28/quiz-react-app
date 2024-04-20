@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "../../services/apiService";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,11 +26,12 @@ const Login = () => {
     //call api
     let response = await postLogin(email.trim(), password.trim());
     if (response && response.EC === 0) {
+      dispatch({ type: "FETCH_USER_LOGIN_SUCCESS", payload: response.DT });
       toast.success("Login success");
       localStorage.setItem("token", response.DT.access_token);
       localStorage.setItem("email", JSON.stringify(response.DT.email));
       //redirect
-      navigate("/admin");
+      navigate("/");
     }
 
     if (response && response.EC !== 0) {
@@ -37,6 +39,7 @@ const Login = () => {
     }
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="login-container">
       <div className="header d-flex justify-content-end align-items-center px-5">

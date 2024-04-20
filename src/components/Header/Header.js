@@ -4,9 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const account = useSelector((state) => state.user.account);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -28,19 +31,26 @@ const Header = () => {
             </NavLink>
           </Nav>
           <Nav>
-            <Button variant="outline-dark" onClick={() => navigate("/login")}>
-              Log in
-            </Button>
-            <p className="px-1"></p>
-            <Button variant="dark" onClick={() => navigate("/register")}>
-              Sign up
-            </Button>
-            {/* <NavDropdown title="Setting" id="basic-nav-dropdown">
-              <NavDropdown.Item>Log in</NavDropdown.Item>
-              <NavDropdown.Item>Log out</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item>Profile</NavDropdown.Item>
-            </NavDropdown> */}
+            {isAuthenticated && account ? (
+              <NavDropdown title="Setting" id="basic-nav-dropdown">
+                <NavDropdown.Item>Profile</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item>Log out</NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => navigate("/login")}
+                >
+                  Log in
+                </Button>
+                <p className="px-1"></p>
+                <Button variant="dark" onClick={() => navigate("/register")}>
+                  Sign up
+                </Button>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
